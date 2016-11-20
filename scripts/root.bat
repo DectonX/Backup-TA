@@ -36,12 +36,25 @@ if NOT "!rootPermission!" == "true" (
 		    echo will set device at bootloop, till now we can't totally disable it 
 		    echo but we can disable it temporarly and get root shell to backup TA
 		    echo thanks to [zxz0o0] to give us this chance        [STILL IN BETA]
-		    echo ===========================================================
+			echo =============================================================
+			echo  1. Backup                             2.Restore
+			echo                      3.Quit
+		    echo =============================================================
 		    tools\adb.exe push tools\iovyroot /data/local/tmp/iovyroot> nul 2>&1
 		    tools\adb.exe shell chmod 777 /data/local/tmp/iovyroot
-		    pause
-		    call scripts\backup.bat backupTA
+			%CHOICE% /c:123 %CHOICE_TEXT_PARAM% "Please make your decision:"
+			set iovy_Backup_Select=!errorlevel!
+			if "!iovy_Backup_Select!" == "1" (
+			    call scripts\backup.bat backupTA
+			)
+			if "!iovy_Backup_Select!" == "2" (
+			    call scripts\restore.bat restoreTA
+			)
+			if "!iovy_Backup_Select!" == "3" (
+			    goto:eof
+			)
 			set root_decision=
+			set iovy_Backup_Select=
 	        goto:eof
 		) else (
 		    goto:eof
